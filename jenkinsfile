@@ -1,0 +1,21 @@
+pipeline {
+    parameters {
+  choice choices: ['Dev', 'Qa', 'Prod'], name: 'branch'
+}
+    agent any
+    stages {
+        stage('checkout SCM'){
+            steps{
+                echo "Fetching changes from selected ${params.branch} branch"
+                git url:'https://gitlab.com/indie3/jenkins.git', branch: "$params.branch"
+            }
+        }
+        stage('test AWS credentials') {
+            steps {
+                withAWS(credentials: 'get1', region: 'us-east-1') {
+                    sh 'aws secretsmanager list-secrets'
+                }
+            }
+        }
+    }
+}

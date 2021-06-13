@@ -8,6 +8,7 @@ pipeline {
                     s3Upload acl: 'Private', bucket: 'myfirstbucet', file: 'hello.txt'
                     s3Download bucket: 'myfirstbucet', file: 'downloadedHello.txt', path: 'hello.txt'
                     sh 'cat downloadedHello.txt'
+                
                 }
             }
         }
